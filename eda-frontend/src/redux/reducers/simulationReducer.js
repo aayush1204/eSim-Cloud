@@ -5,7 +5,8 @@ const initialState = {
   isGraph: 'false',
   text: [],
   graph: {},
-  isSimRes: false
+  isSimRes: false,
+  taskids: [],
 }
 
 export default function (state = initialState, action) {
@@ -33,6 +34,18 @@ export default function (state = initialState, action) {
         text: action.payload.text
       }
     }
+      
+    case actions.FETCH_TASK_IDS: {
+      const taskids = []
+      action.payload.forEach(element => {
+        taskids.push(element["task_id"])
+      })
+      
+      return {
+        ...state,
+        taskids: taskids
+      }
+    }  
 
     default:
       return state

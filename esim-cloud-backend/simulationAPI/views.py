@@ -1,4 +1,4 @@
-from simulationAPI.serializers import TaskSerializer
+from simulationAPI.serializers import TaskSerializer, TaskIdsSerializer
 from simulationAPI.tasks import process_task
 from rest_framework.permissions import AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -9,6 +9,7 @@ from rest_framework.exceptions import ValidationError
 from celery.result import AsyncResult
 import uuid
 import logging
+from simulationAPI.models import Task
 
 logger = logging.getLogger(__name__)
 
@@ -63,3 +64,17 @@ class CeleryResultView(APIView):
             return Response(response_data)
         else:
             raise ValidationError('Invalid uuid format')
+
+class TaskIdsView(APIView):
+    permission_classes = (AllowAny,)
+    methods = ['GET']
+
+    def get(self, request):
+        data = Task.objects.all()
+
+        serializer_context = {
+            'request': request,
+        }
+        ser = TaskIdsSerializer(data, many=True, context=serializer_context)
+            
+        return Response(ser.data)

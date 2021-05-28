@@ -29,3 +29,10 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         spiceFile.objects.create(task=task, file=files_data)
         logger.info('Created Object for:' + files_data.name)
         return task
+
+class TaskIdsSerializer(serializers.HyperlinkedModelSerializer):
+    file = FileSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Task
+        fields = ('task_id', 'task_time', 'file')

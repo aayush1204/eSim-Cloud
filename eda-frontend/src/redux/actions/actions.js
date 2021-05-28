@@ -27,6 +27,7 @@ export const SET_CONTROL_BLOCK = 'SET_CONTROL_BLOCK'
 export const SET_RESULT_TITLE = 'SET_RESULT_TITLE'
 export const SET_RESULT_GRAPH = 'SET_RESULT_GRAPH'
 export const SET_RESULT_TEXT = 'SET_RESULT_TEXT'
+export const FETCH_TASK_IDS = 'FETCH_TASK_IDS'
 
 // Actions for handeling user authentication and registeration
 export const USER_LOADING = 'USER_LOADING'

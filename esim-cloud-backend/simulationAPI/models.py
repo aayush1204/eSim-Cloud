@@ -4,6 +4,13 @@ from django.contrib.auth.models import User
 from django.conf import settings
 import uuid
 
+TASK_CHOICES = [
+    ("DC SWEEP","DC SWEEP"),
+    ("TRANSIENT ANALYSIS", "TRANSIENT ANALYSIS"),
+    ("DC SOLVER", "DC SOLVER"),
+    ("AC ANALYSIS", "AC ANALYSIS"),
+]
+
 
 class Task(models.Model):
     # User details for auth to be stored along with task.
@@ -12,7 +19,9 @@ class Task(models.Model):
     task_time = models.DateTimeField(auto_now=True, db_index=True)
     task_id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
-
+   
+    task_name = models.CharField(default = "Untitled", max_length=50)    
+    task_type = models.CharField(choices = TASK_CHOICES, default = "DC SWEEP",max_length=50)
     def save(self, *args, **kwargs):
         super(Task, self).save(*args, **kwargs)
 
