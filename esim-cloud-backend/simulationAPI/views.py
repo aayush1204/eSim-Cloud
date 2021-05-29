@@ -10,7 +10,7 @@ from celery.result import AsyncResult
 import uuid
 import logging
 from simulationAPI.models import Task
-
+import json
 logger = logging.getLogger(__name__)
 
 
@@ -69,8 +69,34 @@ class TaskIdsView(APIView):
     permission_classes = (AllowAny,)
     methods = ['GET']
 
-    def get(self, request):
-        data = Task.objects.all()
+    def get(self, request, type_simulation):
+
+        # body_unicode = request.body.decode('utf-8')
+        # body = json.loads(body_unicode)
+        
+        print(type_simulation)
+        print(1)
+        print(1)
+        print(1)
+        print(1)
+        print(1)
+        print(1)
+        print(1)
+        print(1)
+        print(1)
+        print(1)
+        print(1)
+
+        if type_simulation == "Transient":
+            data = Task.objects.filter(task_type = "TRANSIENT ANALYSIS")
+        elif type_simulation == "DcSolver":
+            data = Task.objects.filter(task_type = "DC SOLVER")    
+        elif type_simulation == "DcSweep":
+            data = Task.objects.filter(task_type = "DC SWEEP")    
+        elif type_simulation == "Ac":
+            data = Task.objects.filter(task_type = "AC ANALYSIS")            
+        else:
+            data = Task.objects.all()
 
         serializer_context = {
             'request': request,

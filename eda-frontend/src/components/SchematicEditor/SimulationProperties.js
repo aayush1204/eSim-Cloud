@@ -20,7 +20,7 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { makeStyles } from '@material-ui/core/styles'
 import { useSelector, useDispatch } from 'react-redux'
-import { setControlLine, setControlBlock, setResultTitle, setResultGraph, setResultText } from '../../redux/actions/index'
+import { setControlLine, setControlBlock, setResultTitle, setResultGraph, setResultGraph1, setResultText, getTaskIds } from '../../redux/actions/index'
 import { GenerateNetList, GenerateNodeList, GenerateCompList } from './Helper/ToolbarTools'
 import SimulationScreen from './SimulationScreen'
 
@@ -157,7 +157,7 @@ export default function SimulationProperties () {
       .then((response) => {
         const res = response.data
         const getUrl = 'simulation/status/'.concat(res.details.task_id)
-
+        console.log(res.details.task_id)
         simulationResult(getUrl)
       })
       .catch(function (error) {
@@ -229,6 +229,8 @@ export default function SimulationProperties () {
               }
 
               dispatch(setResultGraph(simResultGraph))
+              dispatch(setResultGraph1(simResultGraph))
+              
             } else {
               var simResultText = []
               for (let i = 0; i < temp.length; i++) {
@@ -250,7 +252,7 @@ export default function SimulationProperties () {
           }
         }
       })
-      .then((res) => { handlesimulateOpen() })
+      .then((res) => { setTimeout(handlesimulateOpen, 5000);})
       .catch(function (error) {
         console.log(error)
       })
@@ -264,24 +266,26 @@ export default function SimulationProperties () {
       case 'DcSolver':
         // console.log('To be implemented')
         controlLine = '.op'
-
+        dispatch(getTaskIds(type))
         dispatch(setResultTitle('DC Solver Output'))
         break
       case 'DcSweep':
         // console.log(dcSweepcontrolLine)
         controlLine = `.dc ${dcSweepcontrolLine.parameter} ${dcSweepcontrolLine.start} ${dcSweepcontrolLine.stop} ${dcSweepcontrolLine.step} ${dcSweepcontrolLine.parameter2} ${dcSweepcontrolLine.start2} ${dcSweepcontrolLine.stop2} ${dcSweepcontrolLine.step2}`
+        dispatch(getTaskIds(type))
         dispatch(setResultTitle('DC Sweep Output'))
         break
       case 'Transient':
         // console.log(transientAnalysisControlLine)
         controlLine = `.tran ${transientAnalysisControlLine.step} ${transientAnalysisControlLine.stop} ${transientAnalysisControlLine.start}`
 
+        dispatch(getTaskIds(type))
         dispatch(setResultTitle('Transient Analysis Output'))
         break
       case 'Ac':
         // console.log(acAnalysisControlLine)
         controlLine = `.ac ${acAnalysisControlLine.input} ${acAnalysisControlLine.pointsBydecade} ${acAnalysisControlLine.start} ${acAnalysisControlLine.stop}`
-
+        dispatch(getTaskIds(type))
         dispatch(setResultTitle('AC Analysis Output'))
         break
       default:

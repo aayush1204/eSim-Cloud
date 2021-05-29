@@ -7,6 +7,11 @@ const initialState = {
   graph: {},
   isSimRes: false,
   taskids: [],
+  isGraph1: 'false',
+  text1: [],
+  graph1: {},
+  isSimRes1: false,
+
 }
 
 export default function (state = initialState, action) {
@@ -25,6 +30,15 @@ export default function (state = initialState, action) {
         graph: action.payload.graph
       }
     }
+    case actions.SET_RESULT_GRAPH_1: {
+      return {
+        ...state,
+        isSimRes1: true,
+        isGraph1: 'true',
+        graph1: action.payload.graph
+      }
+    }
+      
 
     case actions.SET_RESULT_TEXT: {
       return {
@@ -38,9 +52,12 @@ export default function (state = initialState, action) {
     case actions.FETCH_TASK_IDS: {
       const taskids = []
       action.payload.forEach(element => {
-        taskids.push(element["task_id"])
+        var temp = {}
+        temp["task_name"] = element["task_name"]
+        temp["task_id"] = element["task_id"]
+        taskids.push(temp)
       })
-      
+      console.log(taskids)
       return {
         ...state,
         taskids: taskids

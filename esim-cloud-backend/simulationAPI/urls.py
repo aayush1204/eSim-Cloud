@@ -14,6 +14,6 @@ urlpatterns = [
     path('status/<uuid:task_id>',
          simulationAPI_views.CeleryResultView.as_view(), name='celery_status'),
     
-    path('status/task_ids',
+    path('status/task_ids/<str:type_simulation>',
          simulationAPI_views.TaskIdsView.as_view(), name='task_ids'),         
 ]

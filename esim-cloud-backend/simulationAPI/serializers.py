@@ -35,4 +35,4 @@ class TaskIdsSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('task_id', 'task_time', 'file')
+        fields = ('task_id', 'task_time', 'file', 'task_name')

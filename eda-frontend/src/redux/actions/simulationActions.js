@@ -21,6 +21,16 @@ export const setResultGraph = (graph) => (dispatch) => {
   })
 }
 
+// Action to update store with graphical result points
+export const setResultGraph1 = (graph) => (dispatch) => {
+  dispatch({
+    type: actions.SET_RESULT_GRAPH_1,
+    payload: {
+      graph: graph
+    }
+  })
+}
+
 // Action to update store with simulation result text
 export const setResultText = (text) => (dispatch) => {
   dispatch({
@@ -32,7 +42,7 @@ export const setResultText = (text) => (dispatch) => {
 }
 
 // Action to fetch taskids
-export const getTaskIds = () => (dispatch) => {
+export const getTaskIds = (type) => (dispatch) => {
   
   const token = store.getState().authReducer.token
   const config = {
@@ -40,15 +50,16 @@ export const getTaskIds = () => (dispatch) => {
       'Authorization': `Token ${token}`
     }
   }
-
-  const url = '/simulation/status/task_ids'
-  api.get(url, config)
+  
+  const url = `/simulation/status/task_ids/${type}`
+  api.get(url , config)
     .then(
       (res) => {
         dispatch({
           type: actions.FETCH_TASK_IDS,
           payload: res.data,
         })
+        console.log(res)
       }
     )
     .catch((err) => { console.error(err) })
