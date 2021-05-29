@@ -52,6 +52,7 @@ export default function SimulationProperties () {
   const isSimRes = useSelector(state => state.simulationReducer.isSimRes)
   const dispatch = useDispatch()
   const classes = useStyles()
+  const schSave = useSelector(state => state.saveSchematicReducer)
   const [nodeList, setNodeList] = useState([])
   const [componentsList, setComponentsList] = useState([])
   const [dcSweepcontrolLine, setDcSweepControlLine] = useState({
@@ -79,6 +80,7 @@ export default function SimulationProperties () {
     pointsBydecade: ''
   })
 
+  var task_type= ''
   const [controlBlockParam, setControlBlockParam] = useState('')
 
   const handleControlBlockParam = (evt) => {
@@ -169,6 +171,9 @@ export default function SimulationProperties () {
   function netlistConfig (file) {
     const formData = new FormData()
     formData.append('file', file)
+    formData.append('task_name', schSave.title)
+    formData.append('task_type', task_type)
+    
     const config = {
       headers: {
         'content-type': 'multipart/form-data'
@@ -266,17 +271,20 @@ export default function SimulationProperties () {
       case 'DcSolver':
         // console.log('To be implemented')
         controlLine = '.op'
+        task_type = type
         dispatch(getTaskIds(type))
         dispatch(setResultTitle('DC Solver Output'))
         break
       case 'DcSweep':
         // console.log(dcSweepcontrolLine)
+        task_type = type
         controlLine = `.dc ${dcSweepcontrolLine.parameter} ${dcSweepcontrolLine.start} ${dcSweepcontrolLine.stop} ${dcSweepcontrolLine.step} ${dcSweepcontrolLine.parameter2} ${dcSweepcontrolLine.start2} ${dcSweepcontrolLine.stop2} ${dcSweepcontrolLine.step2}`
         dispatch(getTaskIds(type))
         dispatch(setResultTitle('DC Sweep Output'))
         break
       case 'Transient':
         // console.log(transientAnalysisControlLine)
+        task_type = type
         controlLine = `.tran ${transientAnalysisControlLine.step} ${transientAnalysisControlLine.stop} ${transientAnalysisControlLine.start}`
 
         dispatch(getTaskIds(type))
@@ -284,6 +292,7 @@ export default function SimulationProperties () {
         break
       case 'Ac':
         // console.log(acAnalysisControlLine)
+        task_type = type
         controlLine = `.ac ${acAnalysisControlLine.input} ${acAnalysisControlLine.pointsBydecade} ${acAnalysisControlLine.start} ${acAnalysisControlLine.stop}`
         dispatch(getTaskIds(type))
         dispatch(setResultTitle('AC Analysis Output'))

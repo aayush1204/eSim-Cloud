@@ -1,11 +1,9 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react'
 import Chart from 'chart.js'
-
+import { useSelector } from 'react-redux'
 import 'chartjs-plugin-colorschemes'
 let lineGraph
-
-import { useSelector } from 'react-redux'
 // Chart Style Options
 Chart.defaults.global.defaultFontColor = '#e6e6e6'
 
